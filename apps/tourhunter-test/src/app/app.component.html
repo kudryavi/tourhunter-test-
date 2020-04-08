@@ -1,0 +1,56 @@
+<mat-drawer-container class="mat-container">
+  <mat-drawer class="mat-container__item" mode="side" opened>
+    <mat-tree class="mat-tree" [dataSource]="dataSource" [treeControl]="treeControl">
+      <ng-container *ngIf="idsStops$ | async as selectedIds">
+        <mat-tree-node
+          class="mat-tree__item mat-tree__item--cursor"
+          *matTreeNodeDef="let node"
+          matTreeNodePadding
+          [matTreeNodePaddingIndent]="indent"
+          [class.mat-tree__item--touched]="selectedIds[node.id]"
+          (click)="selectStops(node)">
+          {{node.name}}
+        </mat-tree-node>
+      </ng-container>
+      <mat-tree-node
+        class="mat-tree__item mat-tree__item--cursor"
+        *matTreeNodeDef="let node;when: hasChild"
+        matTreeNodePadding
+        [matTreeNodePaddingIndent]="indent"
+        (click)="selectStops(node)">
+        <button
+          class="mat-tree__button"
+          mat-icon-button
+          matTreeNodeToggle
+          [attr.aria-label]="'toggle ' + node.name">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        {{node.name}}
+      </mat-tree-node>
+    </mat-tree>
+  </mat-drawer>
+  <mat-drawer class="mat-container__item" mode="side" opened position="end">
+    <div class="wrapper-stops">
+      <h3>Остановки:</h3>
+      <div class="list-stops" *ngFor="let stop of touchedStops | async; trackBy: trackByFn">
+        <p>- {{ stop.name }}</p>
+        <button
+          mat-icon-button
+          aria-label="Example icon-button with a trash icon"
+          (click)="deleteStop(stop)">
+          <mat-icon [style.vertical-align]="'baseline'">delete_outline</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content class="mat-container__item mat-container__item--width">
+    <tourhunter-test-map
+      [centrMap]="centrMap"
+      [zoomMap]="zoomMap"
+      [points$]="points$"
+      (pointHovered)="deleteMarkerFromMap($event)">
+    </tourhunter-test-map>
+  </mat-drawer-content>
+</mat-drawer-container>

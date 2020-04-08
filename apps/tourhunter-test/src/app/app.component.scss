@@ -1,0 +1,40 @@
+.mat-container {
+  height: 100%;
+  border: 1px solid #555;
+
+  &__item {
+    width: 20%;
+    margin: 0;
+
+    &--width {
+      width: 60%;
+    }
+  }
+}
+
+.mat-tree {
+
+  &__button {
+    background-color: transparent;
+  }
+
+  &__item {
+    &--cursor {
+      cursor: pointer;
+    }
+
+    &--touched {
+      color: #ccff66;
+    }
+  }
+}
+
+.wrapper-stops {
+  padding: 10px;
+}
+
+.list-stops {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
